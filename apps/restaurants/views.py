@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.shortcuts import render
 from rest_framework import viewsets, mixins, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from apps.restaurants.serializers import RestaurantSerializer
+from apps.restaurants.models import Restaurant
+from apps.restaurants.serializers import RestaurantSerializer, RestaurantCrudSerializer
 from apps.users.serializers import UserSerializer
 from restaurant_management.core.facebook_auth import FaceBookAuthProvider
 from restaurant_management.core.google_auth import GoogleAuthProvider
@@ -19,6 +21,7 @@ class RestaurantSignUpViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
         context = super().get_serializer_context()
         email_or_phone = self.request.data.get('email_or_phone')
         password = self.request.data.get('password')
+        print(email_or_phone)
         context.update({
             "email_or_phone": email_or_phone,
             "password": password,
@@ -36,6 +39,7 @@ class RestaurantLoginViewSet(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
             response = dict(**serializer.validated_data)
             user = serializer.user
+            print(user.__dict__)
             response['user'] = UserSerializer(instance=user).data
 
         login_type = request.data.get('login_type')
@@ -87,3 +91,15 @@ class RestaurantLoginViewSet(TokenObtainPairView):
         if len(token) == 2:
             return token[1]
         return None
+
+
+class RestaurantViewSet(
+    viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin
+):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = RestaurantCrudSerializer
+
+    def get_queryset(self):
+        restaurant_id = self.kwargs.get('pk')
+        return Restaurant.objects.filter(pk=restaurant_id) if restaurant_id else None

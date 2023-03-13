@@ -3,6 +3,7 @@ import logging
 
 from django.contrib.auth import get_user_model
 from rest_framework import mixins, viewsets, status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from rest_framework.response import Response
@@ -97,3 +98,12 @@ class LoginViewSet(TokenObtainPairView):
         if len(token) == 2:
             return token[1]
         return None
+
+
+class UserViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin, mixins.RetrieveModelMixin):
+    serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return get_user_model().objects.filter(pk=self.request.user.id)
+

@@ -13,21 +13,22 @@ class UserRoleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserRole
-        fields = ('user_id', "role")
+        fields = ('user_id', "role", "restaurant_id")
+        read_only_fields = ('restaurant_id',)
 
 
 class UserSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(read_only=True)
     user_role = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', "user_role"]
-        read_only_fields = ("id", )
+        fields = ('id', 'username', 'first_name', 'last_name', "user_role")
+        read_only_fields = ("id",)
 
     def get_user_role(self, instance):
         user_role = UserRole.objects.filter(user_id=instance.id)
-        serializer = UserRoleSerializer(user_role, many=True)
-        return serializer.data
+        return UserRoleSerializer(instance=user_role, many=True).data
 
 
 class SignUpSerializer(serializers.ModelSerializer):

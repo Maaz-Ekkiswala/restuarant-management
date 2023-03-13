@@ -9,11 +9,11 @@ from restaurant_management.core.models import Base
 
 # Create your models here.
 class UserProfile(Base):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_profile")
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name="user_profile")
     address = models.TextField(verbose_name="address", null=True, blank=True)
     email_or_phone = models.CharField(max_length=100)
 
-    USERNAME_FIELD = 'email_or_phone'
+    USERNAME_FIELD = ['email_or_phone']
 
     @staticmethod
     def create_user(username, data):

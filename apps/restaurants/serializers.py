@@ -6,6 +6,7 @@ from rest_framework import serializers
 from apps.restaurants.models import Restaurant
 from apps.users.constants import Role
 from apps.users.models import UserProfile, UserRole
+from restaurant_management.core.serializers import BaseSerializer
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -33,17 +34,18 @@ class RestaurantSerializer(serializers.ModelSerializer):
         return validate_data
 
     def create(self, validated_data):
+        username = self.context.get('email_or_phone')
         with transaction.atomic():
             restaurant_instance = Restaurant.objects.create(
                 **validated_data
             )
             user_instance = get_user_model().objects.create_user(
-                username=self.context.get('email_or_phone'),
+                username=username,
                 password=self.context.get('password')
             )
             user_profile = UserProfile.objects.create(
                 user=user_instance,
-                email_or_phone=self.context.get('email_or_phone'),
+                email_or_phone=username,
             )
             user_role = UserRole.objects.create(
                 user=user_instance,
@@ -51,3 +53,14 @@ class RestaurantSerializer(serializers.ModelSerializer):
                 restaurant=restaurant_instance
             )
         return restaurant_instance
+
+
+class RestaurantCrudSerializer(BaseSerializer):
+
+    class Meta:
+        model = Restaurant
+        fields = (
+            "id", "name", "city_id", "country_id", "code_postal", "speciality",
+            "highlight", "opening_time", "closing_time", "status", "code_wifi"
+        )
+        read_only_fields = ("id",)
