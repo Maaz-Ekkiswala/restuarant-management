@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import render
 from rest_framework import viewsets, mixins, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -21,7 +20,6 @@ class RestaurantSignUpViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
         context = super().get_serializer_context()
         email_or_phone = self.request.data.get('email_or_phone')
         password = self.request.data.get('password')
-        print(email_or_phone)
         context.update({
             "email_or_phone": email_or_phone,
             "password": password,
@@ -102,4 +100,4 @@ class RestaurantViewSet(
 
     def get_queryset(self):
         restaurant_id = self.kwargs.get('pk')
-        return Restaurant.objects.filter(pk=restaurant_id) if restaurant_id else None
+        return Restaurant.objects.filter(pk=restaurant_id) if restaurant_id else Restaurant.objects.none()
