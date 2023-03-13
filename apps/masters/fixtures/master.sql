@@ -1,11 +1,11 @@
 -- Create default country
-INSERT INTO public.countries (id,"name",country_code,creation_date,update_date,created_by,updated_by) values
-	(1,'India','+91', now(),NULL,NULL,NULL),
-	(2,'Australia','+61', now(),NULL,NULL,NULL);
+INSERT INTO public.masters_country (id, created_ts, updated_ts, is_active, "name", "country_code", created_by_id, updated_by_id) VALUES
+	(1, now(), now(), true, 'India','+91', NULL, NULL),
+	(2, now(), now(), true, 'Australia','+50',NULL,NULL);
 
-INSERT INTO public.cities (id, "name",country_id,creation_date,update_date,created_by,updated_by) VALUES
-	 (1,'Gujarat',1, now(),NULL,NULL,NULL),
-	 (2,'Maharashtra',1,now(),NULL,NULL,NULL),
-	 (3,'Sydney',2,now(),NULL,NULL,NULL),
-	 (4,'Canberra',2,now(),NULL,NULL,NULL);
+INSERT INTO public.masters_city (id ,created_ts, updated_ts, is_active, "name", country_id_id, created_by_id, updated_by_id) VALUES
+	 (1,now(), now(), true, 'Gujarat',1, NULL,NULL),
+	 (2, now(), now(), true,'Maharashtra',1, NULL,NULL),
+	 (3,now(), now(), true,'Sydney',2, NULL,NULL),
+	 (4,now(), now(), true, 'Canberra',2, NULL,NULL);
 

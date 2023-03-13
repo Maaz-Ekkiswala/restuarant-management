@@ -15,7 +15,21 @@ class UserProfile(Base):
 
     USERNAME_FIELD = 'email_or_phone'
 
-
+    @staticmethod
+    def create_user(username, data):
+        user_instance = get_user_model().objects.create(
+            username=username,
+            **data
+        )
+        user_profile_instance = UserProfile.objects.create(
+            user=user_instance,
+            email_or_phone=user_instance.username
+        )
+        user_role = UserRole.objects.create(
+            user=user_instance,
+            role=Role.CUSTOMER
+        )
+        return user_instance
 
 class UserRole(Base):
     user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name="user_role")

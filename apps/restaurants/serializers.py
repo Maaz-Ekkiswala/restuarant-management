@@ -35,7 +35,6 @@ class RestaurantSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         with transaction.atomic():
             restaurant_instance = Restaurant.objects.create(
-                email_or_phone=self.context.get('email_or_phone'),
                 **validated_data
             )
             user_instance = get_user_model().objects.create_user(
