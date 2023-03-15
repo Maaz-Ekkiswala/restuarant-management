@@ -26,3 +26,13 @@ class Menu(Base):
 
     class Meta:
         unique_together = ("restaurant", "name")
+
+    @staticmethod
+    def is_valid_options(menu, options):
+        menu_options = menu.options
+        available_options = []
+        for option in options:
+            for menu_option in menu_options:
+                if menu_option.get('name').lower() == option.get('name').lower():
+                    available_options.append(menu_option)
+        return False if len(available_options) != len(options) else True

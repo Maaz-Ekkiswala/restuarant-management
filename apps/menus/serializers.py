@@ -1,4 +1,5 @@
 from apps.menus.models import Category, Menu
+from apps.restaurants.models import Restaurant
 from restaurant_management.core.serializers import BaseSerializer
 
 
@@ -30,6 +31,25 @@ class MenuSerializer(BaseSerializer):
     def create(self, validated_data):
         menu = Menu.objects.create(
             restaurant_id=self.context.get('restaurant_id'),
+            **validated_data
+        )
+        return menu
+
+
+class MenuCategorySerializer(BaseSerializer):
+
+    class Meta:
+        model = Menu
+        fields = (
+            "id", "name", "restaurant_id", "highlight", "category_id",
+            "picture_address", "price", "available", "rating", "options"
+        )
+        read_only_fields = ("id", "restaurant_id", "category_id")
+
+    def create(self, validated_data):
+        menu = Menu.objects.create(
+            restaurant_id=self.context.get('restaurant_id'),
+            category_id=self.context.get('category_id'),
             **validated_data
         )
         return menu
