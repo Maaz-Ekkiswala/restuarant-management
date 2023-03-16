@@ -17,3 +17,6 @@ class Restaurant(Base):
     closing_time = models.TimeField(null=True)
     status = models.CharField(max_length=6, choices=RestaurantStatus.choices())
     code_wifi = models.CharField(null=True, max_length=30)
+
+    class Meta:
+        db_table = "restaurant"

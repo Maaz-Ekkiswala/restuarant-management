@@ -2,11 +2,9 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from apps.users.constants import Role
 from apps.users.models import UserProfile, UserRole
-from restaurant_management.core.serializers import BaseSerializer
 
 
 class UserRoleSerializer(serializers.ModelSerializer):

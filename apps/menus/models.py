@@ -10,6 +10,7 @@ class Category(Base):
     restaurant = models.ForeignKey(to=Restaurant, on_delete=models.CASCADE)
 
     class Meta:
+        db_table = "category"
         unique_together = ("restaurant", "name")
 
 
@@ -25,6 +26,7 @@ class Menu(Base):
     options = models.JSONField(verbose_name="items options")
 
     class Meta:
+        db_table = "menu"
         unique_together = ("restaurant", "name")
 
     @staticmethod

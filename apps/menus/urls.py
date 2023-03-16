@@ -9,9 +9,10 @@ category_router.register("categories", views.CategoryViewSet, basename="categori
 category_router.register("menus", views.MenuViewSet, basename="menus")
 
 menu_router = DefaultRouter()
-menu_router.register("menus", views.MenuCategoryViewSet, basename="menu_category")
+menu_router.register("", views.MenuCategoryViewSet, basename="menu_category")
 
 urlpatterns = [
-        path("categories/<int:category_id>/", include(menu_router.urls)),
         path('', include(category_router.urls)),
+        path("categories/<int:category_id>/menus/", include(menu_router.urls)),
+
 ]

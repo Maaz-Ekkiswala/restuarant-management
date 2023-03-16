@@ -10,6 +10,7 @@ from apps.restaurants.serializers import RestaurantSerializer, RestaurantCrudSer
 from apps.users.serializers import UserSerializer
 from restaurant_management.core.facebook_auth import FaceBookAuthProvider
 from restaurant_management.core.google_auth import GoogleAuthProvider
+from restaurant_management.core.permissions import RestaurantPermission
 
 
 # Create your views here.
@@ -37,7 +38,6 @@ class RestaurantLoginViewSet(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
             response = dict(**serializer.validated_data)
             user = serializer.user
-            print(user.__dict__)
             response['user'] = UserSerializer(instance=user).data
 
         login_type = request.data.get('login_type')
@@ -95,9 +95,11 @@ class RestaurantViewSet(
     viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.DestroyModelMixin,
     mixins.UpdateModelMixin
 ):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, RestaurantPermission)
     serializer_class = RestaurantCrudSerializer
 
     def get_queryset(self):
         restaurant_id = self.kwargs.get('pk')
-        return Restaurant.objects.filter(pk=restaurant_id) if restaurant_id else Restaurant.objects.none()
+        return Restaurant.objects.filter(
+            pk=restaurant_id
+        ) if restaurant_id else Restaurant.objects.none()

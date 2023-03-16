@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 from django.db import models
 
 from apps.restaurants.models import Restaurant
@@ -14,6 +13,9 @@ class UserProfile(Base):
     email_or_phone = models.CharField(max_length=100)
 
     USERNAME_FIELD = ['email_or_phone']
+
+    class Meta:
+        db_table = "user_profile"
 
     @staticmethod
     def create_user(username, data):
@@ -31,7 +33,11 @@ class UserProfile(Base):
         )
         return user_instance
 
+
 class UserRole(Base):
     user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE, related_name="user_role")
     role = models.CharField(choices=Role.choices(), max_length=10)
     restaurant = models.ForeignKey(to=Restaurant, on_delete=models.CASCADE, null=True, blank=True)
+
+    class Meta:
+        db_table = "user_role"

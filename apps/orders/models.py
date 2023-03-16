@@ -27,6 +27,9 @@ class Sessions(Base):
         default=SessionStatus.ACTIVE
     )
 
+    class Meta:
+        db_table = "session"
+
     @staticmethod
     def is_valid_end_at(started_at, end_at):
         return False if started_at.time() > end_at.time() else True

@@ -4,13 +4,13 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.orders.models import Sessions, Order
 from apps.orders.serializers import SessionSerializer, OrderSerializer
-from restaurant_management.core.permissions import RestaurantPermission
+from restaurant_management.core.permissions import RestaurantPermission, CustomerPermission
 
 
 # Create your views here.
 class SessionViewSet(viewsets.ModelViewSet):
     serializer_class = SessionSerializer
-    permission_classes = (IsAuthenticated, RestaurantPermission)
+    permission_classes = (IsAuthenticated, RestaurantPermission, CustomerPermission)
 
     def get_queryset(self):
         return Sessions.objects.filter(restaurant_id=self.kwargs.get('restaurant_id'))
@@ -28,7 +28,7 @@ class SessionViewSet(viewsets.ModelViewSet):
 
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
-    permission_classes = (IsAuthenticated, RestaurantPermission)
+    permission_classes = (IsAuthenticated, RestaurantPermission, CustomerPermission)
 
     def get_queryset(self):
         return Order.objects.filter(restaurant_id=self.kwargs.get('restaurant_id'))
