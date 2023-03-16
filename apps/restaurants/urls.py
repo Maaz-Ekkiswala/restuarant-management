@@ -11,6 +11,6 @@ restaurant_router.register("", views.RestaurantViewSet, basename="restaurant")
 
 urlpatterns = [
         path('restaurant-login/', views.RestaurantLoginViewSet.as_view(), name='token_obtain_pair'),
-        path("restaurant-refresh_token/", TokenRefreshView.as_view(), name="token_refresh"),
+        path("restaurant-refresh-token/", TokenRefreshView.as_view(), name="token_refresh"),
         path('', include(restaurant_router.urls)),
 ]

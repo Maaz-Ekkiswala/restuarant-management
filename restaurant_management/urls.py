@@ -47,4 +47,5 @@ urlpatterns = [
         "api/v1/restaurants/<int:restaurant_id>/", include("apps.orders.urls"),
         name="orders"
     ),
+    path("api/v1/masters/", include("apps.masters.urls"), name="masters")
 ]
