@@ -57,7 +57,8 @@ class RestaurantManagementTestCase(APITestCase):
 
         get_user_model().objects.create_user(
             username=TEST_RESTAURANT_EMAIL_OR_PHONE,
-            password=TEST_RESTAURANT_PASSWORD
+            password=TEST_RESTAURANT_PASSWORD,
+            is_active=True
         )
 
     def setUp(self) -> None:

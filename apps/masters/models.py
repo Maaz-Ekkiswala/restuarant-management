@@ -13,6 +13,6 @@ class Country(Base):
 
 
 class City(Base):
-    country_id = models.ForeignKey(to=Country, on_delete=models.CASCADE, related_name="country_cities")
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="country_cities")
     name = models.CharField(max_length=20, unique=True)
 

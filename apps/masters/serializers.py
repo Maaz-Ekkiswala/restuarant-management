@@ -7,7 +7,7 @@ class CitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = City
-        fields = ("id", "name", "country_id")
+        fields = ("id", "name", "country")
         read_only_fields = ("id",)
 
 
