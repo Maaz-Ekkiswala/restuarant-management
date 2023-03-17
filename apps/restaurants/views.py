@@ -103,3 +103,7 @@ class RestaurantViewSet(
         return Restaurant.objects.filter(
             pk=restaurant_id
         ) if restaurant_id else Restaurant.objects.none()
+
+    def perform_destroy(self, instance):
+        instance.is_active = False
+        instance.save()

@@ -9,3 +9,4 @@ INSERT INTO public.masters_city (id ,created_ts, updated_ts, is_active, "name", 
 	 (3,now(), now(), true,'Sydney',2, NULL,NULL),
 	 (4,now(), now(), true, 'Canberra',2, NULL,NULL);
 
+

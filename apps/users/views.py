@@ -100,10 +100,16 @@ class LoginViewSet(TokenObtainPairView):
         return None
 
 
-class UserViewSet(viewsets.GenericViewSet, mixins.UpdateModelMixin, mixins.RetrieveModelMixin):
+class UserViewSet(
+    viewsets.GenericViewSet, mixins.UpdateModelMixin, mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin
+):
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         return get_user_model().objects.filter(pk=self.request.user.id)
 
+    def perform_destroy(self, instance):
+        instance.is_active = False
+        instance.save()
